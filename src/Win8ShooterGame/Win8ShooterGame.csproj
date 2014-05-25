@@ -131,6 +131,7 @@
     <Compile Include="Program.cs" />
     <Compile Include="ShooterGame.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="ShooterGameInputState.cs" />
   </ItemGroup>
   <ItemGroup>
     <AppxManifest Include="Package.appxmanifest">
@@ -182,9 +183,6 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="Content\Sound\menuMusic.xnb">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Content\Graphics\bertAndErnie.xnb">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <None Include="Win8ShooterGame_TemporaryKey.pfx" />

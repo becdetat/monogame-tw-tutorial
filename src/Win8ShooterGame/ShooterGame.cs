@@ -1,5 +1,7 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using Microsoft.Xna.Framework.Input;
+using Microsoft.Xna.Framework.Input.Touch;
 
 namespace Win8ShooterGame
 {
@@ -7,7 +9,13 @@ namespace Win8ShooterGame
     {
         GraphicsDeviceManager _graphics;
         SpriteBatch _spriteBatch;
-        private Player _player;
+        private readonly Player _player;
+        private GamePadState _currentGamePadState;
+        private GamePadState _previousGamePadState;
+        private KeyboardState _currentKeyboardState;
+        private KeyboardState _previousKeyboardState;
+        private MouseState _currentMouseState;
+        private MouseState _previousMouseState;
 
         public ShooterGame()
         {
@@ -18,7 +26,7 @@ namespace Win8ShooterGame
 
         protected override void Initialize()
         {
-            // TODO: Add your initialization logic here
+            TouchPanel.EnabledGestures = GestureType.FreeDrag;
 
             base.Initialize();
         }
@@ -51,9 +59,36 @@ namespace Win8ShooterGame
         /// <param name="gameTime">Provides a snapshot of timing values.</param>
         protected override void Update(GameTime gameTime)
         {
-            // TODO: Add your update logic here
+            UpdateInputStates();
+
+            var currentGameState = GetCurrentState(gameTime);
+
+            _player.Update(currentGameState);
 
             base.Update(gameTime);
+        }
+
+        private void UpdateInputStates()
+        {
+            _previousGamePadState = _currentGamePadState;
+            _currentGamePadState = GamePad.GetState(PlayerIndex.One);
+            _previousKeyboardState = _currentKeyboardState;
+            _currentKeyboardState = Keyboard.GetState();
+            _previousMouseState = _currentMouseState;
+            _currentMouseState = Mouse.GetState();
+        }
+
+        private ShooterGameInputState GetCurrentState(GameTime gameTime)
+        {
+            return new ShooterGameInputState(
+                _currentGamePadState, 
+                _previousGamePadState, 
+                _currentKeyboardState, 
+                _previousKeyboardState, 
+                _currentMouseState, 
+                _previousMouseState, 
+                gameTime, 
+                GraphicsDevice.Viewport);
         }
 
         protected override void Draw(GameTime gameTime)
