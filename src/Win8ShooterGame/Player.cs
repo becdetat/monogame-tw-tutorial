@@ -1,4 +1,5 @@
-﻿using Microsoft.Xna.Framework;
+﻿using System;
+using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
@@ -6,7 +7,7 @@ using Microsoft.Xna.Framework.Input.Touch;
 
 namespace Win8ShooterGame
 {
-    public class Player
+    public class Player : ISprite
     {
         private const float Speed = 8.0f;
         private readonly Animation _animation = new Animation();
@@ -22,10 +23,10 @@ namespace Win8ShooterGame
             get { return _animation.FrameHeight; }
         }
 
-        public void Initialize(ContentManager content, Viewport viewport)
+        public void Initialize(Func<string, Texture2D> getTexture, Viewport viewport)
         {
             _animation.Initialize(
-                content.Load<Texture2D>(@"Graphics\shipAnimation"),
+                getTexture(@"Graphics\shipAnimation"),
                 115, 30, 8);
 
             _position = new Vector2(viewport.TitleSafeArea.X, viewport.TitleSafeArea.Y + viewport.TitleSafeArea.Height/2);
