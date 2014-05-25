@@ -39,8 +39,7 @@ namespace Win8ShooterGame
         {
             _spriteBatch = new SpriteBatch(GraphicsDevice);
 
-            _player.Initialize(Content);
-            _player.SetPosition(new Vector2(GraphicsDevice.Viewport.TitleSafeArea.X, GraphicsDevice.Viewport.TitleSafeArea.Y + GraphicsDevice.Viewport.TitleSafeArea.Height / 2));
+            _player.Initialize(Content, GraphicsDevice.Viewport);
         }
 
         /// <summary>
@@ -96,7 +95,7 @@ namespace Win8ShooterGame
             GraphicsDevice.Clear(Color.CornflowerBlue);
 
             _spriteBatch.Begin();
-            _player.Draw(_spriteBatch);
+            _player.Draw(gameTime, _spriteBatch);
             _spriteBatch.End();
 
             base.Draw(gameTime);

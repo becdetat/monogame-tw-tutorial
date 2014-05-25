@@ -8,53 +8,69 @@ namespace Win8ShooterGame
 {
     public class Player
     {
-        private float _speed = 8.0f;
+        private const float Speed = 8.0f;
+        private readonly Animation _animation = new Animation();
         private Vector2 _position;
 
-        public Texture2D PlayerTexture { get; private set; }
-        public int Width { get { return PlayerTexture.Width; } }
-        public int Height { get { return PlayerTexture.Height; } }
-
-        public void Initialize(ContentManager content)
+        private int Width
         {
-            PlayerTexture = content.Load<Texture2D>(@"Graphics\player");
+            get { return _animation.FrameWidth; }
         }
 
-        public void Draw(SpriteBatch spriteBatch)
+        private int Height
         {
-            spriteBatch.Draw(PlayerTexture, _position, null, Color.White, 0.0f, Vector2.Zero, 1.0f, SpriteEffects.None,
-                0.0f);
+            get { return _animation.FrameHeight; }
         }
 
-        public void SetPosition(Vector2 position)
+        public void Initialize(ContentManager content, Viewport viewport)
         {
-            _position = position;
+            _animation.Initialize(
+                content.Load<Texture2D>(@"Graphics\shipAnimation"),
+                115, 30, 8);
+
+            _position = new Vector2(viewport.TitleSafeArea.X, viewport.TitleSafeArea.Y + viewport.TitleSafeArea.Height/2);
+        }
+
+        public void Draw(GameTime gameTime, SpriteBatch spriteBatch)
+        {
+            _animation.Update(gameTime, _position);
+            _animation.Draw(spriteBatch);
         }
 
         public void Update(ShooterGameInputState gameInputState)
         {
+            UpdatePosition(gameInputState);
+            _animation.Update(gameInputState.GameTime, _position);
+        }
+
+        private void UpdatePosition(ShooterGameInputState gameInputState)
+        {
             var dx = 0.0f;
             var dy = 0.0f;
 
-            dx += gameInputState.CurrentGamePadState.ThumbSticks.Left.X * _speed;
-            dy -= gameInputState.CurrentGamePadState.ThumbSticks.Left.Y * _speed;
+            dx += gameInputState.CurrentGamePadState.ThumbSticks.Left.X*Speed;
+            dy -= gameInputState.CurrentGamePadState.ThumbSticks.Left.Y*Speed;
 
-            if (gameInputState.CurrentKeyboardState.IsKeyDown(Keys.Left) || gameInputState.CurrentGamePadState.DPad.Left == ButtonState.Pressed)
+            if (gameInputState.CurrentKeyboardState.IsKeyDown(Keys.Left) ||
+                gameInputState.CurrentGamePadState.DPad.Left == ButtonState.Pressed)
             {
-                dx -= _speed;
+                dx -= Speed;
             }
-            if (gameInputState.CurrentKeyboardState.IsKeyDown(Keys.Right) || gameInputState.CurrentGamePadState.DPad.Right == ButtonState.Pressed)
+            if (gameInputState.CurrentKeyboardState.IsKeyDown(Keys.Right) ||
+                gameInputState.CurrentGamePadState.DPad.Right == ButtonState.Pressed)
             {
-                dx += _speed;
+                dx += Speed;
             }
 
-            if (gameInputState.CurrentKeyboardState.IsKeyDown(Keys.Up) || gameInputState.CurrentGamePadState.DPad.Up == ButtonState.Pressed)
+            if (gameInputState.CurrentKeyboardState.IsKeyDown(Keys.Up) ||
+                gameInputState.CurrentGamePadState.DPad.Up == ButtonState.Pressed)
             {
-                dy -= _speed;
+                dy -= Speed;
             }
-            if (gameInputState.CurrentKeyboardState.IsKeyDown(Keys.Down) || gameInputState.CurrentGamePadState.DPad.Down == ButtonState.Pressed)
+            if (gameInputState.CurrentKeyboardState.IsKeyDown(Keys.Down) ||
+                gameInputState.CurrentGamePadState.DPad.Down == ButtonState.Pressed)
             {
-                dy += _speed;
+                dy += Speed;
             }
 
             while (TouchPanel.IsGestureAvailable)
@@ -72,7 +88,7 @@ namespace Win8ShooterGame
                 var mousePosition = new Vector2(gameInputState.CurrentMouseState.X, gameInputState.CurrentMouseState.Y);
                 var mousePositionDelta = mousePosition - _position;
                 mousePositionDelta.Normalize();
-                mousePositionDelta = mousePositionDelta * _speed;
+                mousePositionDelta = mousePositionDelta*Speed;
 
                 dx += mousePositionDelta.X;
                 dy += mousePositionDelta.Y;
