@@ -12,7 +12,7 @@ namespace Win8ShooterGame
 
         public void Initialize(ContentManager content)
         {
-            PlayerTexture = content.Load<Texture2D>(@"Graphics\player");
+            PlayerTexture = content.Load<Texture2D>(@"Graphics\bertAndErnie");
         }
 
         public void Draw(SpriteBatch spriteBatch)

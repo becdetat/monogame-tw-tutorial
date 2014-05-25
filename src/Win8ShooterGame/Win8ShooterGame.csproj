@@ -184,6 +184,9 @@
     <Content Include="Content\Sound\menuMusic.xnb">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+    <Content Include="Content\Graphics\bertAndErnie.xnb">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <None Include="Win8ShooterGame_TemporaryKey.pfx" />
   </ItemGroup>
   <ItemGroup>
