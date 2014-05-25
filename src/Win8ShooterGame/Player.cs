@@ -12,6 +12,8 @@ namespace Win8ShooterGame
         private const float Speed = 8.0f;
         private readonly Animation _animation = new Animation();
         private Vector2 _position;
+        private bool _active = true;
+        private int _health = 100;
 
         private int Width
         {
@@ -40,6 +42,11 @@ namespace Win8ShooterGame
 
         public void Update(ShooterGameInputState gameInputState)
         {
+            if (_health <= 0)
+            {
+                _active = false;
+            }
+
             UpdatePosition(gameInputState);
             _animation.Update(gameInputState.GameTime, _position);
         }
@@ -97,6 +104,20 @@ namespace Win8ShooterGame
 
             _position.X = MathHelper.Clamp(_position.X + dx, 0, gameInputState.Viewport.Width - Width);
             _position.Y = MathHelper.Clamp(_position.Y + dy, 0, gameInputState.Viewport.Height - Height);
+        }
+
+        public Rectangle GetBounds()
+        {
+            return new Rectangle(
+                (int) _position.X,
+                (int) _position.Y,
+                _animation.FrameHeight,
+                _animation.FrameWidth);
+        }
+
+        public void ReceiveDamage(int points)
+        {
+            _health -= points;
         }
     }
 }

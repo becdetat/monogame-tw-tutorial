@@ -1,39 +1,34 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 
 namespace Win8ShooterGame
 {
     public class Enemy : ISprite
     {
-        private int _health = 10;
         private readonly Animation _animation = new Animation();
-        public bool IsActive { get; private set; }
+        public int Damage{get { return 10; }}
+        private int _health = 10;
         private Vector2 _position;
-        private int _damage = 10;
-        private float _speed = 6.0f;
         private int _scoreValue = 100;
-        public int Width { get { return _animation.FrameWidth; } }
+        private float _speed = 6.0f;
 
         public Enemy()
         {
             IsActive = true;
         }
 
+        public bool IsActive { get; private set; }
+
+        public int Width
+        {
+            get { return _animation.FrameWidth; }
+        }
+
         public void Initialize(Func<string, Texture2D> getTexture, Viewport viewport)
         {
             var texture = getTexture("Graphics/mineAnimation");
-            _animation.Initialize(texture, 47, 30,  8);
-        }
-
-        public void SetPosition(Vector2 position)
-        {
-            _position = position;
+            _animation.Initialize(texture, 47, 30, 8);
         }
 
         public void Update(ShooterGameInputState input)
@@ -51,12 +46,24 @@ namespace Win8ShooterGame
             _animation.Update(gameTime, _position);
             _animation.Draw(batch);
         }
-    }
 
-    public interface ISprite
-    {
-        void Initialize(Func<string, Texture2D> getTexture, Viewport viewport);
-        void Update(ShooterGameInputState input);
-        void Draw(GameTime gameTime, SpriteBatch batch);
+        public void SetPosition(Vector2 position)
+        {
+            _position = position;
+        }
+
+        public Rectangle GetBounds()
+        {
+            return new Rectangle(
+                (int)_position.X,
+                (int)_position.Y,
+                _animation.FrameHeight,
+                _animation.FrameWidth);
+        }
+
+        public void Destroy()
+        {
+            _health = 0;
+        }
     }
 }

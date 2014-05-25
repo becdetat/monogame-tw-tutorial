@@ -97,12 +97,28 @@ namespace Win8ShooterGame
 
             var currentGameState = GetCurrentState(gameTime);
 
-            _player.Update(currentGameState);
             _background1.Update(gameTime);
             _background2.Update(gameTime);
+
+            _player.Update(currentGameState);
             UpdateEnemies(currentGameState);
+            UpdateCollisions();
 
             base.Update(gameTime);
+        }
+
+        private void UpdateCollisions()
+        {
+            var playerRectangle = _player.GetBounds();
+
+            foreach (var enemy in _enemies)
+            {
+                if (playerRectangle.Intersects(enemy.GetBounds()))
+                {
+                    _player.ReceiveDamage(enemy.Damage);
+                    enemy.Destroy();
+                }
+            }
         }
 
         private void UpdateEnemies(ShooterGameInputState input)
