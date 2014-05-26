@@ -3,83 +3,79 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel.DataAnnotations;
+using Windows.Devices.Custom;
 using Windows.Storage.Streams;
+using Autofac;
+using Autofac.Core;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using Microsoft.Xna.Framework.Input.Touch;
+using Win8ShooterGame.Actors.EnemyActor;
+using Win8ShooterGame.Actors.PlayerActor;
+using Win8ShooterGame.Configuration;
+using Win8ShooterGame.Core;
 using Win8ShooterGame.Extensions;
 
 namespace Win8ShooterGame
 {
     public class ShooterGame : Game
     {
-        GraphicsDeviceManager _graphics;
-        SpriteBatch _spriteBatch;
-        private readonly Player _player;
+        private IPlayer _player;
         private GamePadState _currentGamePadState;
         private GamePadState _previousGamePadState;
         private KeyboardState _currentKeyboardState;
         private KeyboardState _previousKeyboardState;
         private MouseState _currentMouseState;
         private MouseState _previousMouseState;
-        ParallaxingBackground _background1 = new ParallaxingBackground();
-        ParallaxingBackground _background2 = new ParallaxingBackground();
-        private Texture2D _mainBackground;
+        IParallaxingBackground _background1;
+        IParallaxingBackground _background2;
+        private ITexture2D _mainBackground;
         private Rectangle _mainBackgroundRect;
-        private Texture2D _enemyTexture;
-        private ICollection<Enemy> _enemies = new Collection<Enemy>();
+        private ICollection<IEnemy> _enemies = new Collection<IEnemy>();
         private TimeSpan _enemySpawnTime = TimeSpan.FromSeconds(1);
         private TimeSpan _previousEnemySpawnTime = TimeSpan.Zero;
         Random _random = new Random();
-        IDictionary<string, Texture2D> _textures = new Dictionary<string, Texture2D>();
+        private IContainer _container;
+        private ISpriteBatch _spriteBatch;
+        private IEnemyFactory _enemyFactory;
+        private GraphicsDeviceManager _graphics;
 
         public ShooterGame()
         {
             _graphics = new GraphicsDeviceManager(this);
-            Content.RootDirectory = "Content";
-            _player = new Player();
         }
 
         protected override void Initialize()
         {
             TouchPanel.EnabledGestures = GestureType.FreeDrag;
-
-
-
             base.Initialize();
         }
 
-        Texture2D GetTexture(string key)
-        {
-            if (!_textures.ContainsKey(key))
-            {
-                _textures[key] = Content.Load<Texture2D>(key);
-            }
-            return _textures[key];
-        }
-
-        /// <summary>
-        /// LoadContent will be called once per game and is the place to load
-        /// all of your content.
-        /// </summary>
         protected override void LoadContent()
         {
-            _spriteBatch = new SpriteBatch(GraphicsDevice);
+            _container = AutofacConfig.Register(this);
 
-            _player.Initialize(GetTexture, GraphicsDevice.Viewport);
-            
-            _background1.Initialize(Content.Load<Texture2D>("Graphics/bgLayer1"), -1, GraphicsDevice.Viewport.Width, GraphicsDevice.Viewport.Height);
-            _background2.Initialize(Content.Load<Texture2D>("Graphics/bgLayer2"), -2, GraphicsDevice.Viewport.Width, GraphicsDevice.Viewport.Height);
-            
-            _mainBackground = Content.Load<Texture2D>("Graphics/mainBackground");
+            _spriteBatch = _container.Resolve<ISpriteBatch>();
+            _enemyFactory = _container.Resolve<IEnemyFactory>();
+
+            _player = _container.Resolve<IPlayer>();
+
+            var contentManager = _container.Resolve<IContentManager>();
+            var parallaxingBackgroundFactory = _container.Resolve<IParallaxingBackgroundFactory>();
+
+            _background1 = parallaxingBackgroundFactory.Build(contentManager.Load("Graphics/bgLayer1"), -1,
+                GraphicsDevice.Viewport.Width, GraphicsDevice.Viewport.Height);
+            _background2 = parallaxingBackgroundFactory.Build(contentManager.Load("Graphics/bgLayer2"), -2,
+                GraphicsDevice.Viewport.Width, GraphicsDevice.Viewport.Height);
+
+            _mainBackground = contentManager.Load("Graphics/mainBackground");
             _mainBackgroundRect = new Rectangle(0, 0, GraphicsDevice.Viewport.Width, GraphicsDevice.Viewport.Height);
         }
 
         void AddEmemy()
         {
-            var enemy = new Enemy();
-            enemy.Initialize(GetTexture, GraphicsDevice.Viewport);
+            var enemy = _enemyFactory.Build();
             enemy.SetPosition(new Vector2(
                 GraphicsDevice.Viewport.Width + enemy.Width / 2,
                 _random.Next(100, GraphicsDevice.Viewport.Height - 100)));
@@ -131,7 +127,7 @@ namespace Win8ShooterGame
 
             foreach (var enemy in _enemies)
             {
-                enemy.Update(input);
+                enemy.Update();
             }
 
             _enemies.RemoveWhere(x => !x.IsActive);

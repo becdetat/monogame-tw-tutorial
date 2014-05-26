@@ -2,11 +2,13 @@
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 
-namespace Win8ShooterGame
+namespace Win8ShooterGame.Core
 {
     public class ShooterGameInputState
     {
-        public ShooterGameInputState(GamePadState currentGamePadState, GamePadState previousGamePadState, KeyboardState currentKeyboardState, KeyboardState previousKeyboardState, MouseState currentMouseState, MouseState previousMouseState, GameTime gameTime, Viewport viewport)
+        public ShooterGameInputState(GamePadState currentGamePadState, GamePadState previousGamePadState,
+            KeyboardState currentKeyboardState, KeyboardState previousKeyboardState, MouseState currentMouseState,
+            MouseState previousMouseState, GameTime gameTime, Viewport viewport)
         {
             Viewport = viewport;
             GameTime = gameTime;

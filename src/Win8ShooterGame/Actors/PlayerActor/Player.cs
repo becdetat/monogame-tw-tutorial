@@ -1,19 +1,27 @@
-﻿using System;
-using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Content;
-using Microsoft.Xna.Framework.Graphics;
+﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Input;
 using Microsoft.Xna.Framework.Input.Touch;
+using Win8ShooterGame.Configuration;
+using Win8ShooterGame.Core;
 
-namespace Win8ShooterGame
+namespace Win8ShooterGame.Actors.PlayerActor
 {
-    public class Player : ISprite
+    public class Player : IPlayer, IRegistering
     {
         private const float Speed = 8.0f;
-        private readonly Animation _animation = new Animation();
-        private Vector2 _position;
+        private readonly IAnimation _animation;
         private bool _active = true;
         private int _health = 100;
+        private Vector2 _position;
+
+        public Player(IContentManager contentManager, IViewport viewport, IAnimationFactory animationFactory)
+        {
+            _animation = animationFactory.Build(
+                contentManager.Load(@"Graphics\shipAnimation"),
+                115, 30, 8);
+
+            _position = new Vector2(viewport.TitleSafeArea.X, viewport.TitleSafeArea.Y + viewport.TitleSafeArea.Height/2);
+        }
 
         private int Width
         {
@@ -25,19 +33,10 @@ namespace Win8ShooterGame
             get { return _animation.FrameHeight; }
         }
 
-        public void Initialize(Func<string, Texture2D> getTexture, Viewport viewport)
+        public void Draw(GameTime gameTime, ISpriteBatch spriteBatch)
         {
-            _animation.Initialize(
-                getTexture(@"Graphics\shipAnimation"),
-                115, 30, 8);
-
-            _position = new Vector2(viewport.TitleSafeArea.X, viewport.TitleSafeArea.Y + viewport.TitleSafeArea.Height/2);
-        }
-
-        public void Draw(GameTime gameTime, SpriteBatch spriteBatch)
-        {
-            _animation.Update(gameTime, _position);
-            _animation.Draw(spriteBatch);
+            _animation.Update(gameTime);
+            _animation.Draw(spriteBatch, _position);
         }
 
         public void Update(ShooterGameInputState gameInputState)
@@ -48,7 +47,6 @@ namespace Win8ShooterGame
             }
 
             UpdatePosition(gameInputState);
-            _animation.Update(gameInputState.GameTime, _position);
         }
 
         private void UpdatePosition(ShooterGameInputState gameInputState)

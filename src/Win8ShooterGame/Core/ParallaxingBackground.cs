@@ -1,22 +1,17 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
 
-namespace Win8ShooterGame
+namespace Win8ShooterGame.Core
 {
-    public class ParallaxingBackground
+    public class ParallaxingBackground : IParallaxingBackground
     {
-        private Texture2D _texture;
-        private int[] _positions;
-        private int _speed;
+        private readonly int[] _positions;
+        private readonly int _screenHeight;
+        private readonly int _speed;
+        private readonly ITexture2D _texture;
         private int _screenWidth;
-        private int _screenHeight;
 
-        public void Initialize(Texture2D texture, int speed, int screenWidth, int screenHeight)
+        public ParallaxingBackground(ITexture2D texture, int speed, int screenWidth, int screenHeight)
         {
             _texture = texture;
             _speed = speed;
@@ -28,7 +23,7 @@ namespace Win8ShooterGame
 
             for (var i = 0; i < _positions.Length; i ++)
             {
-                _positions[i] = i * _texture.Width;
+                _positions[i] = i*_texture.Width;
             }
         }
 
@@ -59,11 +54,11 @@ namespace Win8ShooterGame
             }
         }
 
-        public void Draw(SpriteBatch batch)
+        public void Draw(ISpriteBatch batch)
         {
             foreach (var position in _positions)
             {
-                batch.Draw(_texture, new Rectangle((int)position, 0, _texture.Width, _screenHeight), Color.White);
+                batch.Draw(_texture, new Rectangle((int) position, 0, _texture.Width, _screenHeight), Color.White);
             }
         }
     }

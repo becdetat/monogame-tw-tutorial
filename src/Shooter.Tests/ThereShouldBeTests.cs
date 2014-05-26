@@ -1,4 +1,8 @@
-﻿using Shouldly;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
 using Xunit;
 
 namespace Shooter.Tests
@@ -8,7 +12,7 @@ namespace Shooter.Tests
         [Fact]
         public void BecauseTestsAreFun()
         {
-            "So here are some tests".ShouldNotBeEmpty();
+            Assert.True(true);
         }
     }
 }

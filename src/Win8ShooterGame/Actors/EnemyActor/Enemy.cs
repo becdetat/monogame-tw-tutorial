@@ -1,21 +1,26 @@
-﻿using System;
-using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
+﻿using Microsoft.Xna.Framework;
+using Win8ShooterGame.Core;
 
-namespace Win8ShooterGame
+namespace Win8ShooterGame.Actors.EnemyActor
 {
-    public class Enemy : ISprite
+    public class Enemy : IEnemy
     {
-        private readonly Animation _animation = new Animation();
-        public int Damage{get { return 10; }}
+        private readonly IAnimation _animation;
+
         private int _health = 10;
         private Vector2 _position;
         private int _scoreValue = 100;
         private float _speed = 6.0f;
 
-        public Enemy()
+        public Enemy(IAnimation animation)
         {
+            _animation = animation;
             IsActive = true;
+        }
+
+        public int Damage
+        {
+            get { return 10; }
         }
 
         public bool IsActive { get; private set; }
@@ -25,13 +30,7 @@ namespace Win8ShooterGame
             get { return _animation.FrameWidth; }
         }
 
-        public void Initialize(Func<string, Texture2D> getTexture, Viewport viewport)
-        {
-            var texture = getTexture("Graphics/mineAnimation");
-            _animation.Initialize(texture, 47, 30, 8);
-        }
-
-        public void Update(ShooterGameInputState input)
+        public void Update()
         {
             _position.X -= _speed;
 
@@ -41,10 +40,10 @@ namespace Win8ShooterGame
             }
         }
 
-        public void Draw(GameTime gameTime, SpriteBatch batch)
+        public void Draw(GameTime gameTime, ISpriteBatch batch)
         {
-            _animation.Update(gameTime, _position);
-            _animation.Draw(batch);
+            _animation.Update(gameTime);
+            _animation.Draw(batch, _position);
         }
 
         public void SetPosition(Vector2 position)
@@ -55,8 +54,8 @@ namespace Win8ShooterGame
         public Rectangle GetBounds()
         {
             return new Rectangle(
-                (int)_position.X,
-                (int)_position.Y,
+                (int) _position.X,
+                (int) _position.Y,
                 _animation.FrameHeight,
                 _animation.FrameWidth);
         }
