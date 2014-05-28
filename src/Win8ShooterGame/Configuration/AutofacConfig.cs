@@ -12,11 +12,10 @@ namespace Win8ShooterGame.Configuration
         {
             var builder = new ContainerBuilder();
 
-            var spriteBatch = new SpriteBatch(game.GraphicsDevice);
             game.Content.RootDirectory = "Content";
 
+            builder.RegisterInstance(new SpriteBatch(game.GraphicsDevice)).AsSelf();
             builder.RegisterInstance(game.Content).AsSelf();
-            builder.RegisterInstance(spriteBatch).AsSelf();
             builder.RegisterInstance(game.GraphicsDevice).AsSelf();
 
             builder.RegisterAssemblyTypes(typeof (AutofacConfig).GetTypeInfo().Assembly)

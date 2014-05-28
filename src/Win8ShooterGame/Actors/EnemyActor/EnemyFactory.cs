@@ -7,17 +7,18 @@ namespace Win8ShooterGame.Actors.EnemyActor
     {
         private readonly IContentManager _contentManager;
         private readonly IAnimationFactory _animationFactory;
+        private ITexture2D _texture;
 
         public EnemyFactory(IContentManager contentManager, IAnimationFactory animationFactory)
         {
             _contentManager = contentManager;
             _animationFactory = animationFactory;
+            _texture = _contentManager.Load("Graphics/mineAnimation");
         }
 
         public IEnemy Build()
         {
-            var texture = _contentManager.Load("Graphics/mineAnimation");
-            var animation = _animationFactory.Build(texture, 47, 30, 8);
+            var animation = _animationFactory.Build(_texture, 47, 30, 8);
             return new Enemy(animation);
         }
     }

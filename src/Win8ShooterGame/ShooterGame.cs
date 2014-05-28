@@ -32,14 +32,14 @@ namespace Win8ShooterGame
         IParallaxingBackground _background2;
         private ITexture2D _mainBackground;
         private Rectangle _mainBackgroundRect;
-        private ICollection<IEnemy> _enemies = new Collection<IEnemy>();
+        private readonly ICollection<IEnemy> _enemies = new Collection<IEnemy>();
         private TimeSpan _enemySpawnTime = TimeSpan.FromSeconds(1);
         private TimeSpan _previousEnemySpawnTime = TimeSpan.Zero;
-        Random _random = new Random();
+        readonly Random _random = new Random();
         private IContainer _container;
         private ISpriteBatch _spriteBatch;
         private IEnemyFactory _enemyFactory;
-        private GraphicsDeviceManager _graphics;
+        private readonly GraphicsDeviceManager _graphics;
 
         public ShooterGame()
         {
