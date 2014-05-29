@@ -8,9 +8,8 @@ namespace Win8ShooterGame.Core
     {
         public ShooterGameInputState(GamePadState currentGamePadState, GamePadState previousGamePadState,
             KeyboardState currentKeyboardState, KeyboardState previousKeyboardState, MouseState currentMouseState,
-            MouseState previousMouseState, GameTime gameTime, Viewport viewport)
+            MouseState previousMouseState, GameTime gameTime)
         {
-            Viewport = viewport;
             GameTime = gameTime;
             PreviousMouseState = previousMouseState;
             CurrentMouseState = currentMouseState;
@@ -27,6 +26,5 @@ namespace Win8ShooterGame.Core
         public MouseState CurrentMouseState { get; private set; }
         public MouseState PreviousMouseState { get; private set; }
         public GameTime GameTime { get; private set; }
-        public Viewport Viewport { get; private set; }
     }
 }

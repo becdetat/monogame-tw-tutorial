@@ -2,7 +2,7 @@
 
 namespace Win8ShooterGame.Core
 {
-    public interface ISprite
+    public interface IDrawMyself
     {
         void Draw(ISpriteBatch spriteBatch, Vector2 position);
     }

@@ -1,5 +1,4 @@
-﻿using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
+﻿using Microsoft.Xna.Framework.Graphics;
 using Win8ShooterGame.Configuration;
 
 namespace Win8ShooterGame.Core
@@ -13,6 +12,9 @@ namespace Win8ShooterGame.Core
             _viewport = graphicsDevice.Viewport;
         }
 
-        public Rectangle TitleSafeArea { get { return _viewport.TitleSafeArea; } }
+        public Viewport Viewport
+        {
+            get { return _viewport; }
+        }
     }
 }

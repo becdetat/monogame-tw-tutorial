@@ -2,7 +2,7 @@
 
 namespace Win8ShooterGame.Core
 {
-    public class Animation : IAnimation, ISprite
+    public class Animation : IAnimation
     {
         private readonly Color _color;
         private readonly int _frameCount;

@@ -1,52 +1,54 @@
 ﻿using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using Microsoft.Xna.Framework.Input.Touch;
 using Win8ShooterGame.Configuration;
 using Win8ShooterGame.Core;
 
-namespace Win8ShooterGame.Actors.PlayerActor
+namespace Win8ShooterGame.Sprites.PlayerSprite
 {
-    public class Player : IPlayer, IRegistering
+    public class Player : Sprite, IPlayer, IRegistering
     {
-        private const float Speed = 8.0f;
         private readonly IAnimation _animation;
         private bool _active = true;
         private int _health = 100;
-        private Vector2 _position;
+        private Viewport _viewport;
+        private Vector2 _velocity = Vector2.Zero;
 
-        public Player(IContentManager contentManager, IViewport viewport, IAnimationFactory animationFactory)
+        public Player(IContentManager contentManager, IViewport viewport, IAnimationFactory animationFactory, ISpriteBatch spriteBatch)
+            : base(spriteBatch)
         {
+            _viewport = viewport.Viewport;
             _animation = animationFactory.Build(
                 contentManager.Load(@"Graphics\shipAnimation"),
                 115, 30, 8);
 
-            _position = new Vector2(viewport.TitleSafeArea.X, viewport.TitleSafeArea.Y + viewport.TitleSafeArea.Height/2);
-        }
+            SetPosition(new Vector2(_viewport.TitleSafeArea.X, _viewport.TitleSafeArea.Y + _viewport.TitleSafeArea.Height / 2));
 
-        private int Width
-        {
-            get { return _animation.FrameWidth; }
-        }
-
-        private int Height
-        {
-            get { return _animation.FrameHeight; }
-        }
-
-        public void Draw(GameTime gameTime, ISpriteBatch spriteBatch)
-        {
-            _animation.Update(gameTime);
-            _animation.Draw(spriteBatch, _position);
-        }
-
-        public void Update(ShooterGameInputState gameInputState)
-        {
-            if (_health <= 0)
+            BeforeDraw += time => _animation.Update(time);
+            BeforeUpdate += state =>
             {
-                _active = false;
-            }
+                if (_health <= 0)
+                {
+                    _active = false;
+                }
+                UpdatePosition(state);
+            };
+        }
 
-            UpdatePosition(gameInputState);
+        protected override float SpeedMultiplier
+        {
+            get { return 8.0f; }
+        }
+
+        protected override Vector2 Velocity
+        {
+            get { return _velocity; }
+        }
+
+        protected override IDrawMyself Drawable
+        {
+            get { return _animation; }
         }
 
         private void UpdatePosition(ShooterGameInputState gameInputState)
@@ -54,29 +56,29 @@ namespace Win8ShooterGame.Actors.PlayerActor
             var dx = 0.0f;
             var dy = 0.0f;
 
-            dx += gameInputState.CurrentGamePadState.ThumbSticks.Left.X*Speed;
-            dy -= gameInputState.CurrentGamePadState.ThumbSticks.Left.Y*Speed;
+            dx += gameInputState.CurrentGamePadState.ThumbSticks.Left.X;
+            dy -= gameInputState.CurrentGamePadState.ThumbSticks.Left.Y;
 
             if (gameInputState.CurrentKeyboardState.IsKeyDown(Keys.Left) ||
                 gameInputState.CurrentGamePadState.DPad.Left == ButtonState.Pressed)
             {
-                dx -= Speed;
+                dx--;
             }
             if (gameInputState.CurrentKeyboardState.IsKeyDown(Keys.Right) ||
                 gameInputState.CurrentGamePadState.DPad.Right == ButtonState.Pressed)
             {
-                dx += Speed;
+                dx ++;
             }
 
             if (gameInputState.CurrentKeyboardState.IsKeyDown(Keys.Up) ||
                 gameInputState.CurrentGamePadState.DPad.Up == ButtonState.Pressed)
             {
-                dy -= Speed;
+                dy --;
             }
             if (gameInputState.CurrentKeyboardState.IsKeyDown(Keys.Down) ||
                 gameInputState.CurrentGamePadState.DPad.Down == ButtonState.Pressed)
             {
-                dy += Speed;
+                dy ++;
             }
 
             while (TouchPanel.IsGestureAvailable)
@@ -84,6 +86,7 @@ namespace Win8ShooterGame.Actors.PlayerActor
                 var gesture = TouchPanel.ReadGesture();
                 if (gesture.GestureType == GestureType.FreeDrag)
                 {
+                    // TODO this will need to be sanitised
                     dx += gesture.Delta.X;
                     dy += gesture.Delta.Y;
                 }
@@ -92,23 +95,22 @@ namespace Win8ShooterGame.Actors.PlayerActor
             if (gameInputState.CurrentMouseState.LeftButton == ButtonState.Pressed)
             {
                 var mousePosition = new Vector2(gameInputState.CurrentMouseState.X, gameInputState.CurrentMouseState.Y);
-                var mousePositionDelta = mousePosition - _position;
+                var mousePositionDelta = mousePosition - Position;
                 mousePositionDelta.Normalize();
-                mousePositionDelta = mousePositionDelta*Speed;
 
+                // TODO this will need to be sanitised
                 dx += mousePositionDelta.X;
                 dy += mousePositionDelta.Y;
             }
 
-            _position.X = MathHelper.Clamp(_position.X + dx, 0, gameInputState.Viewport.Width - Width);
-            _position.Y = MathHelper.Clamp(_position.Y + dy, 0, gameInputState.Viewport.Height - Height);
+            _velocity = new Vector2(dx, dy);
         }
 
-        public Rectangle GetBounds()
+        public override Rectangle GetBounds()
         {
             return new Rectangle(
-                (int) _position.X,
-                (int) _position.Y,
+                (int) Position.X,
+                (int) Position.Y,
                 _animation.FrameHeight,
                 _animation.FrameWidth);
         }

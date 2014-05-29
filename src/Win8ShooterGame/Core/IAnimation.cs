@@ -2,11 +2,10 @@ using Microsoft.Xna.Framework;
 
 namespace Win8ShooterGame.Core
 {
-    public interface IAnimation
+    public interface IAnimation : IDrawMyself
     {
         int FrameWidth { get; }
         int FrameHeight { get; }
         void Update(GameTime gameTime);
-        void Draw(ISpriteBatch spriteBatch, Vector2 position);
     }
 }

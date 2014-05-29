@@ -1,4 +1,4 @@
-namespace Win8ShooterGame.Actors.EnemyActor
+namespace Win8ShooterGame.Sprites.EnemySprite
 {
     public interface IEnemyFactory
     {

@@ -11,11 +11,11 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using Microsoft.Xna.Framework.Input.Touch;
-using Win8ShooterGame.Actors.EnemyActor;
-using Win8ShooterGame.Actors.PlayerActor;
 using Win8ShooterGame.Configuration;
 using Win8ShooterGame.Core;
 using Win8ShooterGame.Extensions;
+using Win8ShooterGame.Sprites.EnemySprite;
+using Win8ShooterGame.Sprites.PlayerSprite;
 
 namespace Win8ShooterGame
 {
@@ -127,7 +127,7 @@ namespace Win8ShooterGame
 
             foreach (var enemy in _enemies)
             {
-                enemy.Update();
+                enemy.Update(input);
             }
 
             _enemies.RemoveWhere(x => !x.IsActive);
@@ -152,8 +152,7 @@ namespace Win8ShooterGame
                 _previousKeyboardState, 
                 _currentMouseState, 
                 _previousMouseState, 
-                gameTime, 
-                GraphicsDevice.Viewport);
+                gameTime);
         }
 
         protected override void Draw(GameTime gameTime)
@@ -168,10 +167,10 @@ namespace Win8ShooterGame
 
             foreach (var enemy in _enemies)
             {
-                enemy.Draw(gameTime, _spriteBatch);
+                enemy.Draw(gameTime);
             }
 
-            _player.Draw(gameTime, _spriteBatch);
+            _player.Draw(gameTime);
 
             _spriteBatch.End();
 

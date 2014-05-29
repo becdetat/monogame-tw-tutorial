@@ -1,9 +1,9 @@
-﻿using Microsoft.Xna.Framework;
+﻿using Microsoft.Xna.Framework.Graphics;
 
 namespace Win8ShooterGame.Core
 {
     public interface IViewport
     {
-        Rectangle TitleSafeArea { get; }
+        Viewport Viewport { get; }
     }
 }

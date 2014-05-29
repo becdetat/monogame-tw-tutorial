@@ -133,10 +133,12 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Actors\EnemyActor\EnemyFactory.cs" />
-    <Compile Include="Actors\EnemyActor\IEnemy.cs" />
-    <Compile Include="Actors\EnemyActor\IEnemyFactory.cs" />
-    <Compile Include="Actors\PlayerActor\IPlayer.cs" />
+    <Compile Include="Core\IDrawMyself.cs" />
+    <Compile Include="Core\Sprite.cs" />
+    <Compile Include="Sprites\EnemySprite\EnemyFactory.cs" />
+    <Compile Include="Sprites\EnemySprite\IEnemy.cs" />
+    <Compile Include="Sprites\EnemySprite\IEnemyFactory.cs" />
+    <Compile Include="Sprites\PlayerSprite\IPlayer.cs" />
     <Compile Include="Core\Animation.cs" />
     <Compile Include="Configuration\AutofacConfig.cs" />
     <Compile Include="Configuration\IRegistering.cs" />
@@ -145,20 +147,20 @@
     <Compile Include="Core\IAnimation.cs" />
     <Compile Include="Core\IAnimationFactory.cs" />
     <Compile Include="Core\IContentManager.cs" />
-    <Compile Include="Core\IDrawable.cs" />
+    <Compile Include="Core\ISprite.cs" />
     <Compile Include="Core\IParallaxingBackground.cs" />
     <Compile Include="Core\IParallaxingBackgroundFactory.cs" />
     <Compile Include="Core\ISpriteBatch.cs" />
     <Compile Include="Core\ITexture2D.cs" />
     <Compile Include="Core\IViewport.cs" />
-    <Compile Include="Actors\EnemyActor\Enemy.cs" />
+    <Compile Include="Sprites\EnemySprite\Enemy.cs" />
     <Compile Include="Core\ParallaxingBackgroundFactory.cs" />
     <Compile Include="Core\SpriteBatchWrapper.cs" />
     <Compile Include="Core\Texture2DWrapper.cs" />
     <Compile Include="Core\ViewportWrapper.cs" />
     <Compile Include="Extensions\CollectionExtensions.cs" />
     <Compile Include="Core\ParallaxingBackground.cs" />
-    <Compile Include="Actors\PlayerActor\Player.cs" />
+    <Compile Include="Sprites\PlayerSprite\Player.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="ShooterGame.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
