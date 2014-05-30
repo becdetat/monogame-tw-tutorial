@@ -1,5 +1,6 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Input;
+using Microsoft.Xna.Framework.Input.Touch;
 
 namespace ShooterGame.Windows.Core
 {
@@ -7,10 +8,15 @@ namespace ShooterGame.Windows.Core
     {
         public ShooterGameInputState(GamePadState currentGamePadState, GamePadState previousGamePadState,
             KeyboardState currentKeyboardState, KeyboardState previousKeyboardState, MouseState currentMouseState,
-            MouseState previousMouseState, GameTime gameTime)
+            MouseState previousMouseState,
+            TouchPanelState currentTouchPanelState,
+            TouchPanelState previousTouchPanelState,
+            GameTime gameTime)
         {
             GameTime = gameTime;
             PreviousMouseState = previousMouseState;
+            CurrentTouchPanelState = currentTouchPanelState;
+            PreviousTouchPanelState = previousTouchPanelState;
             CurrentMouseState = currentMouseState;
             PreviousKeyboardState = previousKeyboardState;
             CurrentKeyboardState = currentKeyboardState;
@@ -24,6 +30,8 @@ namespace ShooterGame.Windows.Core
         public KeyboardState PreviousKeyboardState { get; private set; }
         public MouseState CurrentMouseState { get; private set; }
         public MouseState PreviousMouseState { get; private set; }
+        public TouchPanelState CurrentTouchPanelState { get; private set; }
+        public TouchPanelState PreviousTouchPanelState { get; private set; }
         public GameTime GameTime { get; private set; }
     }
 }

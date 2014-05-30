@@ -5,26 +5,16 @@ namespace ShooterGame.Windows.Core
     public abstract class Sprite : ISprite
     {
         private readonly ISpriteBatch _spriteBatch;
-        private Vector2 _position = Vector2.Zero;
 
         protected Sprite(ISpriteBatch spriteBatch)
         {
             _spriteBatch = spriteBatch;
+            Position = Vector2.Zero;
         }
 
         protected abstract float SpeedMultiplier { get; }
         protected abstract Vector2 Velocity { get; }
         protected abstract IDrawMyself Drawable { get; }
-
-        protected Vector2 Position
-        {
-            get { return _position; }
-        }
-
-        protected event BeforeUpdateHandler BeforeUpdate;
-        protected event AfterUpdateHandler AfterUpdate;
-        protected event BeforeDrawHandler BeforeDraw;
-        protected event AfterDrawHandler AfterDraw;
 
         public void Update(ShooterGameInputState state)
         {
@@ -33,8 +23,10 @@ namespace ShooterGame.Windows.Core
                 BeforeUpdate(state);
             }
 
-            _position.X += Velocity.X*SpeedMultiplier;
-            _position.Y += Velocity.Y*SpeedMultiplier;
+            var deltaX = Velocity.X*SpeedMultiplier;
+            var deltaY = Velocity.Y*SpeedMultiplier;
+
+            Position += new Vector2(deltaX, deltaY);
 
             if (AfterUpdate != null)
             {
@@ -49,7 +41,7 @@ namespace ShooterGame.Windows.Core
                 BeforeDraw(gameTime);
             }
 
-            Drawable.Draw(_spriteBatch, _position);
+            Drawable.Draw(_spriteBatch, Position);
 
             if (AfterDraw != null)
             {
@@ -57,10 +49,13 @@ namespace ShooterGame.Windows.Core
             }
         }
 
-        public void SetPosition(Vector2 position)
-        {
-            _position = position;
-        }
+        public Vector2 Position { get; set; }
+        public abstract Rectangle GetBounds();
+
+        protected event BeforeUpdateHandler BeforeUpdate;
+        protected event AfterUpdateHandler AfterUpdate;
+        protected event BeforeDrawHandler BeforeDraw;
+        protected event AfterDrawHandler AfterDraw;
 
         protected delegate void AfterDrawHandler(GameTime gameTime);
 
@@ -69,7 +64,5 @@ namespace ShooterGame.Windows.Core
         protected delegate void BeforeDrawHandler(GameTime gameTime);
 
         protected delegate void BeforeUpdateHandler(ShooterGameInputState state);
-
-        public abstract Rectangle GetBounds();
     }
 }

@@ -34,6 +34,8 @@ namespace ShooterGame.Windows
         private ISpriteBatch _spriteBatch;
         private IEnemyFactory _enemyFactory;
         private readonly GraphicsDeviceManager _graphics;
+        private TouchPanelState _currentTouchPanelState;
+        private TouchPanelState _previousTouchPanelState;
 
         public ShooterGame()
         {
@@ -70,9 +72,9 @@ namespace ShooterGame.Windows
         void AddEmemy()
         {
             var enemy = _enemyFactory.Build();
-            enemy.SetPosition(new Vector2(
+            enemy.Position = new Vector2(
                 GraphicsDevice.Viewport.Width + enemy.Width / 2,
-                _random.Next(100, GraphicsDevice.Viewport.Height - 100)));
+                _random.Next(100, GraphicsDevice.Viewport.Height - 100));
             _enemies.Add(enemy);
         }
 
@@ -138,6 +140,8 @@ namespace ShooterGame.Windows
             _currentKeyboardState = Keyboard.GetState();
             _previousMouseState = _currentMouseState;
             _currentMouseState = Mouse.GetState();
+            _previousTouchPanelState = _currentTouchPanelState;
+            _currentTouchPanelState = TouchPanel.GetState(this.Window);
         }
 
         private ShooterGameInputState GetCurrentState(GameTime gameTime)
@@ -149,6 +153,8 @@ namespace ShooterGame.Windows
                 _previousKeyboardState,
                 _currentMouseState,
                 _previousMouseState,
+                _currentTouchPanelState,
+                _previousTouchPanelState,
                 gameTime);
         }
 

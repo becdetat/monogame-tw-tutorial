@@ -23,7 +23,7 @@ namespace ShooterGame.Windows.Sprites.PlayerSprite
                 contentManager.Load(@"Graphics\shipAnimation"),
                 115, 30, 8);
 
-            SetPosition(new Vector2(_viewport.TitleSafeArea.X, _viewport.TitleSafeArea.Y + _viewport.TitleSafeArea.Height / 2));
+            Position = new Vector2(_viewport.TitleSafeArea.X, _viewport.TitleSafeArea.Y + _viewport.TitleSafeArea.Height / 2);
 
             BeforeDraw += time => _animation.Update(time);
             BeforeUpdate += state =>
@@ -81,9 +81,9 @@ namespace ShooterGame.Windows.Sprites.PlayerSprite
                 dy ++;
             }
 
-            while (TouchPanel.IsGestureAvailable)
+            while (gameInputState.CurrentTouchPanelState.IsGestureAvailable)
             {
-                var gesture = TouchPanel.ReadGesture();
+                var gesture = gameInputState.CurrentTouchPanelState.ReadGesture();
                 if (gesture.GestureType == GestureType.FreeDrag)
                 {
                     // TODO this will need to be sanitised
