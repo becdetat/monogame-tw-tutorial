@@ -1,4 +1,5 @@
-﻿using Microsoft.Xna.Framework;
+﻿using System;
+using Microsoft.Xna.Framework;
 
 namespace ShooterGame.Windows.Core
 {
@@ -12,7 +13,7 @@ namespace ShooterGame.Windows.Core
             Position = Vector2.Zero;
         }
 
-        protected abstract float SpeedMultiplier { get; }
+        public abstract float Speed { get; }
         protected abstract Vector2 Velocity { get; }
         protected abstract IDrawMyself Drawable { get; }
 
@@ -23,15 +24,24 @@ namespace ShooterGame.Windows.Core
                 BeforeUpdate(state);
             }
 
-            var deltaX = Velocity.X*SpeedMultiplier;
-            var deltaY = Velocity.Y*SpeedMultiplier;
+            var deltaX = Velocity.X*Speed;
+            var deltaY = Velocity.Y*Speed;
 
-            Position += new Vector2(deltaX, deltaY);
+            var newPosition = Position + new Vector2(deltaX, deltaY);
+            if (CheckNewPosition(newPosition))
+            {
+                Position = newPosition;
+            }
 
             if (AfterUpdate != null)
             {
                 AfterUpdate(state);
             }
+        }
+
+        protected virtual bool CheckNewPosition(Vector2 newPosition)
+        {
+            return true;
         }
 
         public void Draw(GameTime gameTime)

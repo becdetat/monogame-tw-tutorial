@@ -50,6 +50,17 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ObjectMothers\BuilderFor.cs" />
+    <Compile Include="ObjectMothers\ObjectMother`Core`ShooterGameInputStates.cs" />
+    <Compile Include="ObjectMothers\ObjectMother`Input`GamePadStates.cs" />
+    <Compile Include="ObjectMothers\ObjectMother`Sprites`PlayerSprite`PlayerConfigurations.cs" />
+    <Compile Include="ObjectMothers\ObjectMother`Core`Viewports.cs" />
+    <Compile Include="ObjectMothers\ObjectMother`Sprites`PlayerSprite`Players.cs" />
+    <Compile Include="Sprites\PlayerSprite\PlayerTests\WhenLeftThumbStickFullyRightAndUp.cs" />
+    <Compile Include="Sprites\PlayerSprite\PlayerTests\WhenPlayerIsOnBottomBoundaryWithLeftThumbStickFullyDown.cs" />
+    <Compile Include="Sprites\PlayerSprite\PlayerTests\WhenPlayerIsOnLeftBoundaryWithLeftThumbStickFullyLeft.cs" />
+    <Compile Include="Sprites\PlayerSprite\PlayerTests\WhenPlayerIsOnRightBoundaryWithLeftThumbStickFullyRight.cs" />
+    <Compile Include="Sprites\PlayerSprite\PlayerTests\WhenPlayerIsOnTopBoundaryWithLeftThumbStickFullyUp.cs" />
     <Compile Include="Sprites\PlayerSprite\PlayerTests\WhenThereAreNoInputs.cs" />
     <Compile Include="ThereShouldBeTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -63,6 +74,7 @@
       <Name>ShooterGame.Windows</Name>
     </ProjectReference>
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

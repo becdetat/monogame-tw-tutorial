@@ -17,7 +17,7 @@ namespace ShooterGame.Windows.Sprites.EnemySprite
             get { return _animation; }
         }
 
-        protected override float SpeedMultiplier
+        public override float Speed
         {
             get { return 6.0f; }
         }
@@ -57,8 +57,8 @@ namespace ShooterGame.Windows.Sprites.EnemySprite
         public override Rectangle GetBounds()
         {
             return new Rectangle(
-                (int) Position.X,
-                (int) Position.Y,
+                (int)Position.X - _animation.FrameWidth / 2,
+                (int) Position.Y - _animation.FrameHeight / 2,
                 _animation.FrameHeight,
                 _animation.FrameWidth);
         }

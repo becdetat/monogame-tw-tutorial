@@ -66,7 +66,9 @@
     <Compile Include="Sprites\EnemySprite\IEnemy.cs" />
     <Compile Include="Sprites\EnemySprite\IEnemyFactory.cs" />
     <Compile Include="Sprites\PlayerSprite\IPlayer.cs" />
+    <Compile Include="Sprites\PlayerSprite\IPlayerConfiguration.cs" />
     <Compile Include="Sprites\PlayerSprite\Player.cs" />
+    <Compile Include="Sprites\PlayerSprite\PlayerConfiguration.cs" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="Autofac">
