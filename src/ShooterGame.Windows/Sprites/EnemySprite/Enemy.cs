@@ -22,7 +22,7 @@ namespace ShooterGame.Windows.Sprites.EnemySprite
             get { return 6.0f; }
         }
 
-        private int _health = 10;
+        public int Health { get; private set; }
         private int _scoreValue = 100;
 
         public Enemy(IAnimation animation, ISpriteBatch spriteBatch)
@@ -30,10 +30,11 @@ namespace ShooterGame.Windows.Sprites.EnemySprite
         {
             _animation = animation;
             IsActive = true;
+            Health = 10;
 
             BeforeUpdate += state =>
             {
-                if (Position.X < -Width || _health <= 0)
+                if (Position.X < -Width || Health <= 0)
                 {
                     IsActive = false;
                 }
@@ -65,7 +66,7 @@ namespace ShooterGame.Windows.Sprites.EnemySprite
 
         public void Destroy()
         {
-            _health = 0;
+            Health = 0;
         }
     }
 }

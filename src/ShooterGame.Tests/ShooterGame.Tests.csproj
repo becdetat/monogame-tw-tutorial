@@ -45,6 +45,9 @@
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="System.Data" />
     <Reference Include="System.Xml" />
+    <Reference Include="TestStack.BDDfy">
+      <HintPath>..\..\packages\TestStack.BDDfy.3.19.1\lib\NET40\TestStack.BDDfy.dll</HintPath>
+    </Reference>
     <Reference Include="xunit">
       <HintPath>..\..\packages\xunit.1.9.2\lib\net20\xunit.dll</HintPath>
     </Reference>
@@ -56,11 +59,13 @@
     <Compile Include="ObjectMothers\ObjectMother`Sprites`PlayerSprite`PlayerConfigurations.cs" />
     <Compile Include="ObjectMothers\ObjectMother`Core`Viewports.cs" />
     <Compile Include="ObjectMothers\ObjectMother`Sprites`PlayerSprite`Players.cs" />
+    <Compile Include="Sprites\EnemySprite\WhenEnemyIsDestroyedScenario.cs" />
+    <Compile Include="Sprites\PlayerSprite\PlayerTests\GivenThePlayerScenarioBase.cs" />
     <Compile Include="Sprites\PlayerSprite\PlayerTests\WhenLeftThumbStickFullyRightAndUp.cs" />
-    <Compile Include="Sprites\PlayerSprite\PlayerTests\WhenPlayerIsOnBottomBoundaryWithLeftThumbStickFullyDown.cs" />
-    <Compile Include="Sprites\PlayerSprite\PlayerTests\WhenPlayerIsOnLeftBoundaryWithLeftThumbStickFullyLeft.cs" />
-    <Compile Include="Sprites\PlayerSprite\PlayerTests\WhenPlayerIsOnRightBoundaryWithLeftThumbStickFullyRight.cs" />
-    <Compile Include="Sprites\PlayerSprite\PlayerTests\WhenPlayerIsOnTopBoundaryWithLeftThumbStickFullyUp.cs" />
+    <Compile Include="Sprites\PlayerSprite\PlayerTests\WhenPlayerIsOnBottomBoundaryWithLeftThumbStickFullyDownScenario.cs" />
+    <Compile Include="Sprites\PlayerSprite\PlayerTests\WhenPlayerIsOnLeftBoundaryWithLeftThumbStickFullyLeftScenario.cs" />
+    <Compile Include="Sprites\PlayerSprite\PlayerTests\WhenPlayerIsOnRightBoundaryWithLeftThumbStickFullyRightScenario.cs" />
+    <Compile Include="Sprites\PlayerSprite\PlayerTests\WhenPlayerIsOnTopBoundaryWithLeftThumbStickFullyUpScenario.cs" />
     <Compile Include="Sprites\PlayerSprite\PlayerTests\WhenThereAreNoInputs.cs" />
     <Compile Include="ThereShouldBeTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
